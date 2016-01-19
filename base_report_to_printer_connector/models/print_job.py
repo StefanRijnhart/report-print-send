@@ -16,7 +16,7 @@ class PrintJob(models.TransientModel):
     @api.multi
     def run(self):
         print 'Run'
-        api.ensure_one()
+        self.ensure_one()
         self.env['report'].with_context(
             safe_eval(self.job_context), queue_print_job=False).print_document(
             safe_eval(self.job_ids), self.name)
