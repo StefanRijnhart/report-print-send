@@ -31,3 +31,10 @@ class Report(models.Model):
         return print_document_async.fire(
             ConnectorSession(cr, uid, context),
             'connector.print.job', job_id)
+
+    @api.v8
+    def print_document(self, records, report_name, html=None, data=None):
+        return self._model.print_document(
+            self._cr, self._uid,
+            records.ids, report_name,
+            html=html, data=data, context=self._context)
