@@ -17,9 +17,11 @@ class PrintJob(models.TransientModel):
     def run(self):
         print 'Run'
         self.ensure_one()
-        self.env['report'].with_context(
-            safe_eval(self.job_context), queue_print_job=False).print_document(
-            safe_eval(self.job_ids), self.name)
+        context = safe_eval(self.job_context or {})
+        context['queue_print_job'] = False
+        return self.pool['report'].print_document(
+            self._cr, self._uid,
+            safe_eval(self.job_ids), self.name, context=context)
 
 
 @job
